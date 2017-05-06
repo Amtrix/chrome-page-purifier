@@ -1,19 +1,28 @@
 
+// From a good fella on stackoverflow:
 var getXElementTreeXPath = function( element ) {
     var paths = [];
+
+    // Use nodeName (instead of localName) so namespace prefix is included (if any).
     for ( ; element && element.nodeType == Node.ELEMENT_NODE; element = element.parentNode )  {
         var index = 0;
 
         for ( var sibling = element.previousSibling; sibling; sibling = sibling.previousSibling ) {
-            if ( sibling.nodeType == Node.DOCUMENT_TYPE_NODE )
+            // Ignore document type declaration.
+            if ( sibling.nodeType == Node.DOCUMENT_TYPE_NODE ) {
                 continue;
+            }
 
-            if ( sibling.nodeName == element.nodeName )
+            if ( sibling.nodeName == element.nodeName ) {
                 ++index;
+            }
         }
 
         var tagName = element.nodeName.toLowerCase();
+
+        // *always* include the sibling index
         var pathIndex = "[" + (index+1) + "]";
+
         paths.unshift( tagName + pathIndex );
     }
 
